@@ -35,11 +35,11 @@ axios.get("https://aniwatcher.com").then((res) => {
         const link = "https://aniwatcher.com" + linkToWatch;
 
 
-        //   if scraping class exists but it is empty, then skip
+        // if scraping class exists but it is empty, then skip
         if (title.length == 0) {
           return;
         } else {
-            // bad solution!!
+            //improve solution!!
             const slicedimage = image.slice(21, 41);
             const newimg = "https://aniwatcher.com" + slicedimage;
 
