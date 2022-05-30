@@ -1,44 +1,58 @@
-const axios = require('axios');
-const cheerio = require('cheerio')
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 // Scraping function
-axios.get('https://blog.sonicmoderna.com')
-    .then(res => {
-        // Declare Array to hold scrapet items
-        const itemsArr = [];
-        // Load the HTML into cheerio
-        const $ = cheerio.load(res.data);
+axios.get("https://aniwatcher.com").then((res) => {
+  // Declare Array to hold scrapet items
+  let itemsArr = [];
+  const filter = [];
+  // Load the HTML into cheerio
+  const $ = cheerio.load(res.data);
 
-        // Scraping data from the page
-        $('.post').each((index, element) => {
+  // Scraping data from the page
+  $("li").each((index, element) => {
+    //   find the title by class
+    const title = $(element)
+        .find(".ser")
+        .text()
+        .trim();
 
-            const title = $(element)
-                .find(".excerpt-title")
-                .text()
-                .trim();
+        const episodeNo = $(element)
+        .find(".title")
+        .text()
+        .trim();
 
-            const link = $(element)
-                .find("a")
-                .attr("href")
-                .trim();
+        const image = $(element)
+        .find(".img")
+        .attr("style")
 
-            const date = $(element)
-                .find(".excerpt-meta")
-                .text()
-                .trim();
+        const linkToWatch = $(element)
+        .find(".ep")
+        .attr("href");
 
-            const bridge = $(element)
-                .find(".excerpt-content")
-                .text()
-                .trim();
 
-            const img = $(element)
-                .find(".featured-image")
-                .attr("data-background");
+        // create link to watch
+        const link = "https://aniwatcher.com" + linkToWatch;
 
-            // Push the scraped data into the array
-            itemsArr[index] = { title, link, date, bridge, img };
-        });
 
-        console.log(itemsArr);
-    })
+        //   if class exists but it is empty, then skip
+        if (title.length == 0) {
+          return;
+        } else {
+            // very bad solution!!
+             const slicedimage = image.slice(21, 41);
+
+             const newimg = "https://aniwatcher.com" + slicedimage;
+
+
+            // Push the scraped data into the array before filtering
+            filter[index] = { title, episodeNo, link, newimg };
+        }
+    });
+
+  // Filter data to avoid empty or undefined entries
+  itemsArr = filter.filter(function (el) {
+    return el != null;
+  });
+  console.log(itemsArr);
+});
