@@ -31,19 +31,17 @@ axios.get("https://aniwatcher.com").then((res) => {
         .attr("href");
 
 
-        // create link to watch
+        // generate direct link to series
         const link = "https://aniwatcher.com" + linkToWatch;
 
 
-        //   if class exists but it is empty, then skip
+        //   if scraping class exists but it is empty, then skip
         if (title.length == 0) {
           return;
         } else {
-            // very bad solution!!
-             const slicedimage = image.slice(21, 41);
-
-             const newimg = "https://aniwatcher.com" + slicedimage;
-
+            // bad solution!!
+            const slicedimage = image.slice(21, 41);
+            const newimg = "https://aniwatcher.com" + slicedimage;
 
             // Push the scraped data into the array before filtering
             filter[index] = { title, episodeNo, link, newimg };
