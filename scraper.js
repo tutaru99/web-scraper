@@ -83,8 +83,8 @@ axios
           } else {
             return;
           }
-          console.log(finalArray);
         });
+        console.log(finalArray);
     });
   })
   .catch((err) => {
