@@ -4,7 +4,8 @@ const cheerio = require("cheerio");
 // Declare Array to hold scraped items
 let itemsArr = [];
 let filter = [];
-let nestedDetails = {};
+let globalViews = {};
+let globalViews22 = {};
 let finalArray = [];
 
 axios
@@ -55,16 +56,31 @@ axios
           $("#social").each((index, element) => {
             if ($(element).attr("id") == "social") {
               const nestedViews = $(".pviews").text().trim();
-              nestedDetails = { nestedViews };
+              globalViews = { nestedViews };
             }
           });
-          // console.log(nestedDetails)
+          // Scraping data from the page x2
+          $("#social").each((index, element) => {
+            if ($(element).attr("id") == "social") {
+              const nestedViews22 = $(".pviews").text().trim();
+              globalViews22 = { nestedViews22 };
+            }
+          });
         })
         .then(() => {
           //  Push the scraped data into the array
           // generate index for each item
 
-          finalArray.push({ ...item, ...nestedDetails });
+          finalArray.push({
+            showName: item.showName,
+            episodeNo: item.episodeNo,
+            previewImage: item.previewImage,
+            watchShow: item.watchShow,
+            nestedDetails: {
+              nestedViews: globalViews.nestedViews,
+              nestedViews22: globalViews22.nestedViews22,
+            },
+          });
           if (finalArray.length == itemsArr.length) {
             // console.log(finalArray);
           } else {
