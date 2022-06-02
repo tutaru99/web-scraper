@@ -9,7 +9,6 @@ let itemsArr = [];
 let filter = [];
 let finalArray = [];
 
-
 axios
   .get("https://aniwatcher.com")
   .then((res) => {
@@ -83,10 +82,20 @@ axios
           } else {
             return;
           }
-        });
-        console.log(finalArray);
+          // console.log(finalArray);
+        })
+        .finally(() => {});
     });
   })
   .catch((err) => {
     console.log(err);
   });
+
+
+
+
+
+// start function after 0.5 seconds
+setTimeout(() => {
+  console.log("delay start", finalArray);
+}, 500);
