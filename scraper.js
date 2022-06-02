@@ -5,6 +5,7 @@ const cheerio = require("cheerio");
 let itemsArr = [];
 let filter = [];
 let nestedDetails = {};
+let finalArray = [];
 
 axios
   .get("https://aniwatcher.com")
@@ -33,32 +34,52 @@ axios
         // Push the scraped data into the array to filter
         filter[index] = { showName, episodeNo, watchShow, previewImage };
       }
-
-
-      
-      
     });
-    
-    
+
     // Filter data to avoid empty or undefined entries
     itemsArr = filter.filter(function (el) {
       return el != null;
     });
 
     // FINAL ARRAY
-    console.log(itemsArr);
+    // console.log(itemsArr);
+  })
+  .then(() => {
+    // Scrape details from each show
+    itemsArr.forEach((item) => {
+      axios
+        .get(item.watchShow)
+        .then((res) => {
+          const $ = cheerio.load(res.data);
+          // Scraping data from the page
+          $("#social").each((index, element) => {
+            if ($(element).attr("id") == "social") {
+              const nestedViews = $(".pviews").text().trim();
+              nestedDetails = { nestedViews };
+            }
+          });
+          // console.log(nestedDetails)
+        })
+        .then(() => {
+          //  Push the scraped data into the array
+          // generate index for each item
 
-  }).catch((err) => {
+          finalArray.push({ ...item, ...nestedDetails });
+          if (finalArray.length == itemsArr.length) {
+            // console.log(finalArray);
+          } else {
+            return;
+          }
+          console.log(finalArray);
+        });
+    });
+  })
+  .catch((err) => {
     console.log(err);
   });
 
-
-
-
-
-
 // TODO
-  /* // Go to details page and scrape views number
+/* // Go to details page and scrape views number
     axios.get(itemsArr.watchShow).then((res) => {
 
             const $ = cheerio.load(res.data);
@@ -75,16 +96,13 @@ axios
             // console.log(err);
           }); */
 
+// 2nd ver
+// axios.get(watchShow).then((res) => {
+//   const $ = cheerio.load(res.data);
+//   const views = $(".pviews").text().trim();
 
+//   // push the data into the array to filter
+//   nestedDetails[index] = { views };
 
-
-          // 2nd ver
-          // axios.get(watchShow).then((res) => {
-          //   const $ = cheerio.load(res.data);
-          //   const views = $(".pviews").text().trim();
-
-          //   // push the data into the array to filter
-          //   nestedDetails[index] = { views };
-
-          //   console.log(nestedDetails);
-          // });
+//   console.log(nestedDetails);
+// });
