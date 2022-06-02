@@ -2,7 +2,7 @@
 scraping the world
 
 @TODO
-- Deeper level scraping (article->link->article content)
+~~- Deeper level scraping (article->link->article content)
 - Scraping results are stored in the database
 - Duplicate detection / Scraping per item performed only once
 - Implement rate limiting when needed
