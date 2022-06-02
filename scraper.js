@@ -2,11 +2,13 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 // Declare Array to hold scraped items
-let itemsArr = [];
-let filter = [];
 let globalViews = {};
 let globalViews22 = {};
+
+let itemsArr = [];
+let filter = [];
 let finalArray = [];
+
 
 axios
   .get("https://aniwatcher.com")
@@ -32,7 +34,7 @@ axios
         const slicedimage = image.slice(21, 41);
         const previewImage = "https://aniwatcher.com" + slicedimage;
 
-        // Push the scraped data into the array to filter
+        // Push the scraped data into the array to filter to avoid empty values
         filter[index] = { showName, episodeNo, watchShow, previewImage };
       }
     });
@@ -41,12 +43,9 @@ axios
     itemsArr = filter.filter(function (el) {
       return el != null;
     });
-
-    // FINAL ARRAY
-    // console.log(itemsArr);
   })
   .then(() => {
-    // Scrape details from each show
+    // Scrape details from each show - details
     itemsArr.forEach((item) => {
       axios
         .get(item.watchShow)
@@ -59,7 +58,7 @@ axios
               globalViews = { nestedViews };
             }
           });
-          // Scraping data from the page x2
+          // Scraping data from the same page x2 - testing to get multiple items from page
           $("#social").each((index, element) => {
             if ($(element).attr("id") == "social") {
               const nestedViews22 = $(".pviews").text().trim();
@@ -68,9 +67,7 @@ axios
           });
         })
         .then(() => {
-          //  Push the scraped data into the array
-          // generate index for each item
-
+          // Push the scraped data into the FINAL array
           finalArray.push({
             showName: item.showName,
             episodeNo: item.episodeNo,
@@ -82,7 +79,7 @@ axios
             },
           });
           if (finalArray.length == itemsArr.length) {
-            // console.log(finalArray);
+            // Not sure how to handle this properly yet
           } else {
             return;
           }
@@ -93,32 +90,3 @@ axios
   .catch((err) => {
     console.log(err);
   });
-
-// TODO
-/* // Go to details page and scrape views number
-    axios.get(itemsArr.watchShow).then((res) => {
-
-            const $ = cheerio.load(res.data);
-             $("#social").each((i, e) => {
-              const views = $(e).find($(".pviews")).text();
-              // push each to the array
-              nestedDetails.views = views;
-              itemsArr.push(nestedDetails);
-              console.log("nested views", itemsArr);
-             });
-
-          })
-          .catch((err) => {
-            // console.log(err);
-          }); */
-
-// 2nd ver
-// axios.get(watchShow).then((res) => {
-//   const $ = cheerio.load(res.data);
-//   const views = $(".pviews").text().trim();
-
-//   // push the data into the array to filter
-//   nestedDetails[index] = { views };
-
-//   console.log(nestedDetails);
-// });
