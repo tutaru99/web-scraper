@@ -97,5 +97,5 @@ axios
 
 // start function after 0.5 seconds
 setTimeout(() => {
-  console.log("delay start", finalArray);
-}, 500);
+  console.log("delay start to make sure array has time to be scraped and populated", finalArray);
+}, 1500);
