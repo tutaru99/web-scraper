@@ -7,16 +7,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 
-// Declare Array to hold scraped items
+// Variables
 let globalViews = {};
 let globalViews22 = {};
 
 let itemsArr = [];
 let filter = [];
-let finalArray = [];
+const finalArray = [];
+
+
+// Website(-s) to be scraped
+const aniwatcher = "https://aniwatcher.com";
+
 
 axios
-  .get("https://aniwatcher.com")
+  .get(aniwatcher)
   .then((res) => {
     // Load the HTML into cheerio
     const $ = cheerio.load(res.data);
@@ -91,9 +96,9 @@ axios
           // console.log(finalArray);
         })
         .finally(() => {
-             app.get("/", (req, res) => {
-               res.json(finalArray);
-             });
+          app.get("/", (req, res) => {
+            res.json(finalArray);
+          });
         });
     });
   })
