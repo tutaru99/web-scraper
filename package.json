@@ -4,13 +4,15 @@
   "description": "web scraper",
   "main": "scraper.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scrap": "nodemon scraper.js"
   },
   "author": "Sai",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.11",
+    "express": "^4.18.1",
     "nodemon": "^2.0.16"
   }
 }

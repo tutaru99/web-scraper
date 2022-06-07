@@ -1,5 +1,11 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
+const express = require("express");
+
+const app = express();
+
+const PORT = process.env.PORT || 3000;
+
 
 // Declare Array to hold scraped items
 let globalViews = {};
@@ -84,7 +90,11 @@ axios
           }
           // console.log(finalArray);
         })
-        .finally(() => {});
+        .finally(() => {
+             app.get("/", (req, res) => {
+               res.json(finalArray);
+             });
+        });
     });
   })
   .catch((err) => {
@@ -95,7 +105,14 @@ axios
 
 
 
-// start function after 0.5 seconds
+// start function after 1.5 seconds
 setTimeout(() => {
-  console.log("delay start to make sure array has time to be scraped and populated", finalArray);
+  // console.log("delay start to make sure array has time to be scraped and populated", finalArray);
 }, 1500);
+
+
+
+
+app.listen(PORT, () => {
+  console.log(`server is running on PORT: ${PORT}`);
+});
