@@ -55,7 +55,7 @@ axios
     });
   })
   .then(() => {
-    // Scrape details from each show - details asd
+    // Scrape details from each show - details
     itemsArr.forEach((item) => {
       axios
         .get(item.watchShow)
